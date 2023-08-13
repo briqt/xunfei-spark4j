@@ -73,12 +73,12 @@ List<SparkMessage> messages=new ArrayList<>();
 
 控制台输出：
 
-```java
+```
 提问：[{"role":"user","content":"请你扮演我的语文老师李老师，问我讲解问题问题，希望你可以保证知识准确，逻辑严谨。"},{"role":"assistant","content":"好的，这位同学，有什么问题需要李老师为你解答吗？"},{"role":"user","content":"鲁迅和周树人小时候打过架吗？"}]
 
-        回答：是的，鲁迅和周树人小时候确实打过架。据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在私塾里学习时，因为争夺一张桌子而打了起来，结果两人都受了伤。不过，这次打架并没有影响他们之间的友谊和合作关系。
+回答：是的，鲁迅和周树人小时候确实打过架。据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在私塾里学习时，因为争夺一张桌子而打了起来，结果两人都受了伤。不过，这次打架并没有影响他们之间的友谊和合作关系。
 
-        提问tokens：66，回答tokens：68，总消耗tokens：134
+提问tokens：66，回答tokens：68，总消耗tokens：134
 ```
 
 ### 流式调用
@@ -153,19 +153,19 @@ List<SparkMessage> messages=new ArrayList<>();
 
 控制台输出：
 
-```java
+```
 提问：[{"role":"user","content":"请你扮演我的语文老师李老师，问我讲解问题问题，希望你可以保证知识准确，逻辑严谨。"},{"role":"assistant","content":"好的，这位同学，有什么问题需要李老师为你解答吗？"},{"role":"user","content":"鲁迅和周树人小时候打过架吗？"}]
 
-        收到回答：
+收到回答：
 
-        --content：是--完整响应：{"header":{"code":0,"status":0,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":0,"seq":0,"text":[{"role":"assistant","content":"是","index":"0"}]}}}
-        --content：的， --完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":1,"text":[{"role":"assistant","content":"的，","index":"0"}]}}}
-        --content：鲁迅和周--完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":2,"text":[{"role":"assistant","content":"鲁迅和周","index":"0"}]}}}
-        --content：树人小时候确实--完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":3,"text":[{"role":"assistant","content":"树人小时候确实","index":"0"}]}}}
-        --content：打过架。 --完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":4,"text":[{"role":"assistant","content":"打过架。","index":"0"}]}}}
-        --content：据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。 --完整响应：{"header":{"code":0,"status":2,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":2,"seq":5,"text":[{"role":"assistant","content":"据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。","index":"0"}]},"usage":{"text":{"prompt_tokens":66,"completion_tokens":65,"total_tokens":131,"question_tokens":20}}}}
+--content：是--完整响应：{"header":{"code":0,"status":0,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":0,"seq":0,"text":[{"role":"assistant","content":"是","index":"0"}]}}}
+--content：的， --完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":1,"text":[{"role":"assistant","content":"的，","index":"0"}]}}}
+--content：鲁迅和周--完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":2,"text":[{"role":"assistant","content":"鲁迅和周","index":"0"}]}}}
+--content：树人小时候确实--完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":3,"text":[{"role":"assistant","content":"树人小时候确实","index":"0"}]}}}
+--content：打过架。 --完整响应：{"header":{"code":0,"status":1,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":1,"seq":4,"text":[{"role":"assistant","content":"打过架。","index":"0"}]}}}
+--content：据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。 --完整响应：{"header":{"code":0,"status":2,"message":"Success","sid":"xxx"},"payload":{"choices":{"status":2,"seq":5,"text":[{"role":"assistant","content":"据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。","index":"0"}]},"usage":{"text":{"prompt_tokens":66,"completion_tokens":65,"total_tokens":131,"question_tokens":20}}}}
 
-        完整回答：是的，鲁迅和周树人小时候确实打过架。据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。
+完整回答：是的，鲁迅和周树人小时候确实打过架。据周作人的回忆录《鲁迅的故事》记载，他和鲁迅小时候在浙江绍兴的一所私塾里读书，两人因为争夺一张桌子而打了起来，最终被老师分开。这件事情也成为了他们之间的一个小秘密。
 
         回答结束；提问tokens：66，回答tokens：65，总消耗tokens：131
 ```
