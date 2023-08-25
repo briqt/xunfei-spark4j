@@ -24,9 +24,9 @@ JDK：1.8
 
 ```xml
 <dependency>
-    <groupId>com.github.briqt</groupId>
+    <groupId>io.github.briqt</groupId>
     <artifactId>xunfei-spark4j</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
