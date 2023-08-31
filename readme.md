@@ -25,7 +25,7 @@ JDK：1.8
 <dependency>
     <groupId>io.github.briqt</groupId>
     <artifactId>xunfei-spark4j</artifactId>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
 </dependency>
 ```
 
@@ -58,6 +58,8 @@ SparkRequest sparkRequest=SparkRequest.builder()
 .maxTokens(2048)
 // 核采样阈值。用于决定结果随机性,取值越高随机性越强即相同的问题得到的不同答案的可能性越高 非必传,取值为[0,1],默认为0.5
 .temperature(0.2)
+// 指定请求版本，默认使用最新2.0版本
+.apiVersion(SparkApiVersion.V2_0)
 .build();
 
 // 同步调用
@@ -147,7 +149,7 @@ SparkRequest sparkRequest=SparkRequest.builder()
 
 // 使用默认的控制台监听器，流式调用；
 // 实际使用时请继承SparkBaseListener自定义监听器实现
-        sparkClient.chatStream(sparkRequest,new SparkConsoleListener());
+sparkClient.chatStream(sparkRequest,new SparkConsoleListener());
 ```
 
 控制台输出：
