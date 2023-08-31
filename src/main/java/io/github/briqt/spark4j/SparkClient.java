@@ -1,5 +1,6 @@
 package io.github.briqt.spark4j;
 
+import io.github.briqt.spark4j.constant.SparkApiVersion;
 import io.github.briqt.spark4j.exception.SparkException;
 import io.github.briqt.spark4j.listener.SparkBaseListener;
 import io.github.briqt.spark4j.listener.SparkSyncChatListener;
@@ -11,7 +12,6 @@ import okhttp3.Request;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -24,34 +24,25 @@ import java.util.*;
  */
 public class SparkClient {
 
-    public String hostUrl = "https://spark-api.xf-yun.com/v1.1/chat";
-
     public String appid;
 
     public String apiKey;
 
     public String apiSecret;
 
-    public URL url;
-
     public OkHttpClient client = new OkHttpClient.Builder().build();
-
-    {
-        try {
-            url = new URL(hostUrl);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void chatStream(SparkRequest sparkRequest, SparkBaseListener listener) {
         sparkRequest.getHeader().setAppId(appid);
         listener.setSparkRequest(sparkRequest);
 
+        SparkApiVersion apiVersion = sparkRequest.getApiVersion();
+        String apiUrl = apiVersion.getUrl();
+
         // 构建鉴权url
         String authWsUrl = null;
         try {
-            authWsUrl = getAuthUrl().replace("http://", "ws://").replace("https://", "wss://");
+            authWsUrl = getAuthUrl(apiUrl).replace("http://", "ws://").replace("https://", "wss://");
         } catch (Exception e) {
             throw new SparkException(500, "构建鉴权url失败", e);
         }
@@ -77,7 +68,8 @@ public class SparkClient {
     /**
      * 获取认证之后的URL
      */
-    public String getAuthUrl() throws Exception {
+    public String getAuthUrl(String apiUrl) throws Exception {
+        URL url = new URL(apiUrl);
         // 时间
         SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
         format.setTimeZone(TimeZone.getTimeZone("GMT"));

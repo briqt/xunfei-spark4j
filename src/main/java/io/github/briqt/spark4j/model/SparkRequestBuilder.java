@@ -1,5 +1,6 @@
 package io.github.briqt.spark4j.model;
 
+import io.github.briqt.spark4j.constant.SparkApiVersion;
 import io.github.briqt.spark4j.model.request.*;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public class SparkRequestBuilder {
 
-    private SparkRequest sparkRequest;
+    private final SparkRequest sparkRequest;
 
     public SparkRequestBuilder() {
         sparkRequest = new SparkRequest();
@@ -28,6 +29,8 @@ public class SparkRequestBuilder {
     }
 
     public SparkRequest build() {
+        SparkApiVersion apiVersion = sparkRequest.getApiVersion();
+        sparkRequest.getParameter().getChat().setDomain(apiVersion.getDomain());
         return sparkRequest;
     }
 
@@ -93,4 +96,12 @@ public class SparkRequestBuilder {
         return this;
     }
 
+    /**
+     * 指定apiVersion<br/>
+     * 非必传，默认使用2.0版本
+     */
+    public SparkRequestBuilder apiVersion(SparkApiVersion apiVersion) {
+        sparkRequest.setApiVersion(apiVersion);
+        return this;
+    }
 }

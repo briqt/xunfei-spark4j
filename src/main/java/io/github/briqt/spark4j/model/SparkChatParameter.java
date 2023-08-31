@@ -14,9 +14,9 @@ public class SparkChatParameter implements Serializable {
 
     /**
      * 指定访问的领域<br/>
-     * 必传,取值为 general
+     * 必传,取值为 generalv2
      */
-    private String domain = "general";
+    private String domain = "generalv2";
 
     /**
      * 核采样阈值。用于决定结果随机性,取值越高随机性越强即相同的问题得到的不同答案的可能性越高<br/>

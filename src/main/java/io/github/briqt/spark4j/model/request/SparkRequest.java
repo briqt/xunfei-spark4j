@@ -1,5 +1,7 @@
 package io.github.briqt.spark4j.model.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.briqt.spark4j.constant.SparkApiVersion;
 import io.github.briqt.spark4j.model.SparkRequestBuilder;
 
 import java.io.Serializable;
@@ -17,6 +19,8 @@ public class SparkRequest implements Serializable {
     private SparkRequestParameter parameter;
 
     private SparkRequestPayload payload;
+
+    private transient SparkApiVersion apiVersion = SparkApiVersion.V2_0;
 
     public static SparkRequestBuilder builder() {
         return new SparkRequestBuilder();
@@ -44,5 +48,15 @@ public class SparkRequest implements Serializable {
 
     public void setPayload(SparkRequestPayload payload) {
         this.payload = payload;
+    }
+
+    @JsonIgnore
+    public SparkApiVersion getApiVersion() {
+        return apiVersion;
+    }
+
+    @JsonIgnore
+    public void setApiVersion(SparkApiVersion apiVersion) {
+        this.apiVersion = apiVersion;
     }
 }

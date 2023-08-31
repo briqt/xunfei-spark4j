@@ -3,6 +3,7 @@ package io.github.briqt.spark4j.listener;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.briqt.spark4j.constant.SparkApiVersion;
 import io.github.briqt.spark4j.model.SparkMessage;
 import io.github.briqt.spark4j.model.request.SparkRequest;
 import io.github.briqt.spark4j.model.response.SparkResponse;
@@ -34,7 +35,9 @@ public class SparkConsoleListener extends SparkBaseListener {
         if (0 == status) {
             List<SparkMessage> messages = sparkRequest.getPayload().getMessage().getText();
             try {
-                System.out.println("提问：" + objectMapper.writeValueAsString(messages));
+                SparkApiVersion apiVersion = sparkRequest.getApiVersion();
+                System.out.println("请求地址：" + apiVersion.getUrl()+"  版本："+apiVersion.getVersion());
+                System.out.println("\n提问：" + objectMapper.writeValueAsString(messages));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
