@@ -14,7 +14,7 @@ public class SparkChatParameter implements Serializable {
 
     /**
      * 指定访问的领域<br/>
-     * 必传,取值为 generalv2
+     * 必传,默认取值为 generalv2
      */
     private String domain = "generalv2";
 
@@ -26,7 +26,10 @@ public class SparkChatParameter implements Serializable {
 
     /**
      * 模型回答的tokens的最大长度<br/>
-     * 非必传,取值为[1,4096],默认为2048
+     *
+     * V1.5取值为[1,4096]，默认为2048
+     * V2.0取值为[1,8192]，默认为2048。
+     * V3.0取值为[1,8192]，默认为2048。
      */
     @JsonProperty("max_tokens")
     private Integer maxTokens;
