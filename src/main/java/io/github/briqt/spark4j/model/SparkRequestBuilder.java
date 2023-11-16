@@ -102,6 +102,7 @@ public class SparkRequestBuilder {
      */
     public SparkRequestBuilder apiVersion(SparkApiVersion apiVersion) {
         sparkRequest.setApiVersion(apiVersion);
+        sparkRequest.getParameter().getChat().setDomain(apiVersion.getDomain());
         return this;
     }
 }
