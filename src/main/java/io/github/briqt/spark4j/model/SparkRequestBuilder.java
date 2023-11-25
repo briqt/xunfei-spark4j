@@ -2,6 +2,10 @@ package io.github.briqt.spark4j.model;
 
 import io.github.briqt.spark4j.constant.SparkApiVersion;
 import io.github.briqt.spark4j.model.request.*;
+import io.github.briqt.spark4j.model.request.function.SparkRequestFunctionMessage;
+import io.github.briqt.spark4j.model.request.function.SparkRequestFunctions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,7 @@ import java.util.List;
  * @author briqt
  */
 public class SparkRequestBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(SparkRequestBuilder.class);
 
     private final SparkRequest sparkRequest;
 
@@ -30,6 +35,9 @@ public class SparkRequestBuilder {
 
     public SparkRequest build() {
         SparkApiVersion apiVersion = sparkRequest.getApiVersion();
+        if (sparkRequest.getPayload().getFunctions() != null && (apiVersion == SparkApiVersion.V2_0 || apiVersion == SparkApiVersion.V1_5)) {
+            logger.warn("apiVersion is {}, this version does not support functions", apiVersion.getVersion());
+        }
         sparkRequest.getParameter().getChat().setDomain(apiVersion.getDomain());
         return sparkRequest;
     }
@@ -103,6 +111,19 @@ public class SparkRequestBuilder {
     public SparkRequestBuilder apiVersion(SparkApiVersion apiVersion) {
         sparkRequest.setApiVersion(apiVersion);
         sparkRequest.getParameter().getChat().setDomain(apiVersion.getDomain());
+        return this;
+    }
+
+    /**
+     * 新增function
+     */
+    public SparkRequestBuilder addFunction(SparkRequestFunctionMessage function) {
+        SparkRequestFunctions functions = sparkRequest.getPayload().getFunctions();
+        if (null == functions) {
+            functions = new SparkRequestFunctions(new ArrayList<>());
+            sparkRequest.getPayload().setFunctions(functions);
+        }
+        functions.getText().add(function);
         return this;
     }
 }

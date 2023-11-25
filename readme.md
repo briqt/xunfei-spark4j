@@ -2,7 +2,7 @@
 
 JDK：1.8
 
-项目依赖：`okhttp3`、`jackson` 
+项目依赖：`okhttp3`、`jackson` 、`slf4j-api`
 
 主要功能：
 
@@ -11,6 +11,7 @@ JDK：1.8
 - 完整的请求和响应数据对象封装，包括状态、用户ID、tokens统计等
 - 封装简化了webSocket对接，提供简单便捷的SparkClient
 - 完整的业务异常信息
+- function call
 
 
 
@@ -27,7 +28,7 @@ JDK：1.8
 <dependency>
     <groupId>io.github.briqt</groupId>
     <artifactId>xunfei-spark4j</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 

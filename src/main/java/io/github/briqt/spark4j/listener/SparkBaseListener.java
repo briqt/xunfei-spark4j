@@ -2,6 +2,7 @@ package io.github.briqt.spark4j.listener;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.briqt.spark4j.exception.SparkException;
 import io.github.briqt.spark4j.model.SparkMessage;
@@ -32,6 +33,8 @@ public class SparkBaseListener extends WebSocketListener {
         objectMapper = new ObjectMapper();
         // 排除值为null的字段
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        // 设置全局忽略未知属性
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /**

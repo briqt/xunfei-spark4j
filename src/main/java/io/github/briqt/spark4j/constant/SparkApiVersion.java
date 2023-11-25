@@ -3,7 +3,7 @@ package io.github.briqt.spark4j.constant;
 /**
  * SparkApiVersion
  *
- * @author wanggl
+ * @author briqt
  * @date 2023/8/31
  */
 public enum SparkApiVersion {

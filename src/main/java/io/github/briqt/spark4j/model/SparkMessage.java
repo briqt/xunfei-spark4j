@@ -1,6 +1,7 @@
 package io.github.briqt.spark4j.model;
 
 import io.github.briqt.spark4j.constant.SparkMessageRole;
+import io.github.briqt.spark4j.model.response.SparkResponseFunctionCall;
 
 /**
  * 消息
@@ -13,6 +14,16 @@ public class SparkMessage {
      * 角色
      */
     private String role;
+
+    /**
+     * 内容类型
+     */
+    private String content_type;
+
+    /**
+     * 函数调用
+     */
+    private SparkResponseFunctionCall function_call;
 
     /**
      * 内容
@@ -68,5 +79,25 @@ public class SparkMessage {
 
     public String getIndex() {
         return index;
+    }
+
+    public String getContent_type() {
+        return content_type;
+    }
+
+    public void setContent_type(String content_type) {
+        this.content_type = content_type;
+    }
+
+    public SparkResponseFunctionCall getFunction_call() {
+        return function_call;
+    }
+
+    public void setFunction_call(SparkResponseFunctionCall function_call) {
+        this.function_call = function_call;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 }

@@ -1,5 +1,7 @@
 package io.github.briqt.spark4j.model.request;
 
+import io.github.briqt.spark4j.model.request.function.SparkRequestFunctions;
+
 import java.io.Serializable;
 
 /**
@@ -12,11 +14,18 @@ public class SparkRequestPayload implements Serializable {
 
     private SparkRequestMessage message;
 
+    private SparkRequestFunctions functions;
+
     public SparkRequestPayload() {
     }
 
     public SparkRequestPayload(SparkRequestMessage message) {
         this.message = message;
+    }
+
+    public SparkRequestPayload(SparkRequestMessage message, SparkRequestFunctions functions) {
+        this.message = message;
+        this.functions = functions;
     }
 
     public SparkRequestMessage getMessage() {
@@ -25,5 +34,13 @@ public class SparkRequestPayload implements Serializable {
 
     public void setMessage(SparkRequestMessage message) {
         this.message = message;
+    }
+
+    public SparkRequestFunctions getFunctions() {
+        return functions;
+    }
+
+    public void setFunctions(SparkRequestFunctions functions) {
+        this.functions = functions;
     }
 }

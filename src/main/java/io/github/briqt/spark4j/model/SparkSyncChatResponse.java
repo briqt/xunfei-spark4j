@@ -1,5 +1,6 @@
 package io.github.briqt.spark4j.model;
 
+import io.github.briqt.spark4j.model.response.SparkResponse;
 import io.github.briqt.spark4j.model.response.SparkTextUsage;
 
 import java.io.Serializable;
@@ -18,6 +19,11 @@ public class SparkSyncChatResponse implements Serializable {
     private String content;
 
     /**
+     * 最后一次响应
+     */
+    private SparkResponse lastResponse;
+
+    /**
      * tokens统计
      */
     private SparkTextUsage textUsage;
@@ -33,6 +39,14 @@ public class SparkSyncChatResponse implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public SparkResponse getLastResponse() {
+        return lastResponse;
+    }
+
+    public void setLastResponse(SparkResponse lastResponse) {
+        this.lastResponse = lastResponse;
     }
 
     public SparkTextUsage getTextUsage() {

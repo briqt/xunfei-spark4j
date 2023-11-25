@@ -8,6 +8,7 @@ import io.github.briqt.spark4j.listener.SparkConsoleListener;
 import io.github.briqt.spark4j.model.SparkMessage;
 import io.github.briqt.spark4j.model.SparkSyncChatResponse;
 import io.github.briqt.spark4j.model.request.SparkRequest;
+import io.github.briqt.spark4j.model.request.function.SparkFunctionBuilder;
 import io.github.briqt.spark4j.model.response.SparkTextUsage;
 import org.junit.jupiter.api.Test;
 
@@ -93,6 +94,40 @@ public class SparkClientTest {
         SparkTextUsage textUsage = chatResponse.getTextUsage();
 
         System.out.println("\n回答：" + chatResponse.getContent());
+        System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
+                + "，回答tokens：" + textUsage.getCompletionTokens()
+                + "，总消耗tokens：" + textUsage.getTotalTokens());
+    }
+
+    /**
+     * 临时测试，非最终版本
+     */
+    @Test
+    void functionCallTest() throws JsonProcessingException {
+        // 消息列表，可以在此列表添加历史对话记录
+        List<SparkMessage> messages = new ArrayList<>();
+        messages.add(SparkMessage.userContent("科大讯飞的最新股票价格是多少"));
+
+        // 构造请求
+        SparkRequest sparkRequest = SparkRequest.builder()
+                // 消息列表
+                .messages(messages)
+                .apiVersion(SparkApiVersion.V3_0)
+                .addFunction(SparkFunctionBuilder.functionName("stockPrice")
+                        .description("根据公司名称查询最新股票价格")
+                        .addParameterProperty("companyName", "string", "公司名称")
+                        .addParameterRequired("companyName").build()
+                ).build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        System.out.println("request：" + objectMapper.writeValueAsString(sparkRequest));
+
+        // 同步调用
+        SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
+        SparkTextUsage textUsage = chatResponse.getTextUsage();
+
+        System.out.println("\nfunctionCall：" + objectMapper.writeValueAsString(chatResponse.getLastResponse().getPayload().getChoices().getText().get(0).getFunction_call()));
         System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
                 + "，回答tokens：" + textUsage.getCompletionTokens()
                 + "，总消耗tokens：" + textUsage.getTotalTokens());

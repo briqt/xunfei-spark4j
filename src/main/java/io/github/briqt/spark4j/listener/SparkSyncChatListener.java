@@ -27,6 +27,7 @@ public class SparkSyncChatListener extends SparkBaseListener {
         if (2 == status) {
             sparkSyncChatResponse.setContent(stringBuilder.toString());
             sparkSyncChatResponse.setTextUsage(usage.getText());
+            sparkSyncChatResponse.setLastResponse(sparkResponse);
             sparkSyncChatResponse.setOk(true);
         }
     }
