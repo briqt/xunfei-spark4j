@@ -9,11 +9,13 @@ import io.github.briqt.spark4j.model.SparkMessage;
 import io.github.briqt.spark4j.model.SparkSyncChatResponse;
 import io.github.briqt.spark4j.model.request.SparkRequest;
 import io.github.briqt.spark4j.model.request.function.SparkFunctionBuilder;
+import io.github.briqt.spark4j.model.response.SparkResponseFunctionCall;
 import io.github.briqt.spark4j.model.response.SparkTextUsage;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SparkClientTest
@@ -99,9 +101,6 @@ public class SparkClientTest {
                 + "，总消耗tokens：" + textUsage.getTotalTokens());
     }
 
-    /**
-     * 临时测试，非最终版本
-     */
     @Test
     void functionCallTest() throws JsonProcessingException {
         // 消息列表，可以在此列表添加历史对话记录
@@ -112,11 +111,18 @@ public class SparkClientTest {
         SparkRequest sparkRequest = SparkRequest.builder()
                 // 消息列表
                 .messages(messages)
+                // 使用functionCall功能版本需要大于等于3.0
                 .apiVersion(SparkApiVersion.V3_0)
-                .addFunction(SparkFunctionBuilder.functionName("stockPrice")
-                        .description("根据公司名称查询最新股票价格")
-                        .addParameterProperty("companyName", "string", "公司名称")
-                        .addParameterRequired("companyName").build()
+                // 添加方法，可多次调用添加多个方法
+                .addFunction(
+                        // 回调时回传的方法名
+                        SparkFunctionBuilder.functionName("stockPrice")
+                                // 让大模型理解方法意图 方法描述
+                                .description("根据公司名称查询最新股票价格")
+                                // 方法需要的参数。可多次调用添加多个参数
+                                .addParameterProperty("companyName", "string", "公司名称")
+                                // 指定以上的参数哪些是必传的
+                                .addParameterRequired("companyName").build()
                 ).build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -126,8 +132,20 @@ public class SparkClientTest {
         // 同步调用
         SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
         SparkTextUsage textUsage = chatResponse.getTextUsage();
+        SparkResponseFunctionCall functionCall = chatResponse.getFunctionCall();
 
-        System.out.println("\nfunctionCall：" + objectMapper.writeValueAsString(chatResponse.getLastResponse().getPayload().getChoices().getText().get(0).getFunction_call()));
+        if (null != functionCall) {
+            String functionName = functionCall.getName();
+            Map<String, Object> arguments = functionCall.getMapArguments();
+
+            System.out.println("\n收到functionCall：方法名称：" + functionName + "，参数：" + objectMapper.writeValueAsString(arguments));
+
+            // 在这里根据方法名和参数自行调用方法实现
+
+        } else {
+            System.out.println("\n回答：" + chatResponse.getContent());
+        }
+
         System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
                 + "，回答tokens：" + textUsage.getCompletionTokens()
                 + "，总消耗tokens：" + textUsage.getTotalTokens());

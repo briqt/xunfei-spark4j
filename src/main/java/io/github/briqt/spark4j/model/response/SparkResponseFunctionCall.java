@@ -1,6 +1,12 @@
 package io.github.briqt.spark4j.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * SparkResponseFunctionCall
@@ -10,6 +16,11 @@ import java.io.Serializable;
  */
 public class SparkResponseFunctionCall implements Serializable {
     private static final long serialVersionUID = -1586729944571910329L;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    {
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     private String arguments;
 
@@ -29,5 +40,14 @@ public class SparkResponseFunctionCall implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Map<String, Object> getMapArguments() {
+        try {
+            return objectMapper.readValue(arguments, new TypeReference<Map<String, Object>>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

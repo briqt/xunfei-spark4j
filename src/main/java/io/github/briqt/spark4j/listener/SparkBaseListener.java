@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.briqt.spark4j.exception.SparkException;
 import io.github.briqt.spark4j.model.SparkMessage;
 import io.github.briqt.spark4j.model.request.SparkRequest;
-import io.github.briqt.spark4j.model.response.SparkResponse;
-import io.github.briqt.spark4j.model.response.SparkResponseChoices;
-import io.github.briqt.spark4j.model.response.SparkResponseHeader;
-import io.github.briqt.spark4j.model.response.SparkResponseUsage;
+import io.github.briqt.spark4j.model.response.*;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
@@ -48,6 +45,20 @@ public class SparkBaseListener extends WebSocketListener {
      * @param webSocket     本次会话的webSocket连接
      */
     public void onMessage(String content, SparkResponseUsage usage, Integer status, SparkRequest sparkRequest, SparkResponse sparkResponse, WebSocket webSocket) {
+        // 重写此方法，实现业务逻辑
+    }
+
+    /**
+     * 收到functionCall调用此方法
+     *
+     * @param functionCall  functionCall
+     * @param usage         tokens消耗统计
+     * @param status        会话状态，取值为[0,1,2]；0代表首次结果；1代表中间结果；2代表最后一个结果，当status为2时，webSocket连接会自动关闭
+     * @param sparkRequest  本次会话的请求参数
+     * @param sparkResponse 本次回调的响应数据
+     * @param webSocket     本次会话的webSocket连接
+     */
+    public void onFunctionCall(SparkResponseFunctionCall functionCall, SparkResponseUsage usage, Integer status, SparkRequest sparkRequest, SparkResponse sparkResponse, WebSocket webSocket) {
         // 重写此方法，实现业务逻辑
     }
 
@@ -91,15 +102,24 @@ public class SparkBaseListener extends WebSocketListener {
         SparkResponseChoices choices = sparkResponse.getPayload().getChoices();
         List<SparkMessage> messages = choices.getText();
         StringBuilder stringBuilder = new StringBuilder();
-        for (SparkMessage message : messages) {
-            stringBuilder.append(message.getContent());
-        }
-        String content = stringBuilder.toString();
+        SparkResponseFunctionCall functionCall = null;
 
         SparkResponseUsage usage = sparkResponse.getPayload().getUsage();
         Integer status = header.getStatus();
 
-        this.onMessage(content, usage, status, sparkRequest, sparkResponse, webSocket);
+        for (SparkMessage message : messages) {
+            if (message.getFunction_call() != null) {
+                functionCall = message.getFunction_call();
+                break;
+            }
+            stringBuilder.append(message.getContent());
+        }
+        if (functionCall != null) {
+            this.onFunctionCall(functionCall, usage, status, sparkRequest, sparkResponse, webSocket);
+        } else {
+            String content = stringBuilder.toString();
+            this.onMessage(content, usage, status, sparkRequest, sparkResponse, webSocket);
+        }
 
         // 最后一条结果，关闭连接
         if (2 == status) {
