@@ -53,6 +53,14 @@ public class SparkMessage {
         return new SparkMessage(SparkMessageRole.ASSISTANT, content);
     }
 
+    /**
+     * 创建system指令
+     * @param content 内容
+     */
+    public static SparkMessage systemContent(String content) {
+        return new SparkMessage(SparkMessageRole.SYSTEM, content);
+    }
+
     public SparkMessage() {
     }
 

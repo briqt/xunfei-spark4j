@@ -17,4 +17,9 @@ public interface SparkMessageRole {
      */
     String ASSISTANT = "assistant";
 
+    /**
+     * 系统指令
+     */
+    String SYSTEM = "system";
+
 }
