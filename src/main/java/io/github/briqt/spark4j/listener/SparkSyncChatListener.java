@@ -5,7 +5,11 @@ import io.github.briqt.spark4j.model.request.SparkRequest;
 import io.github.briqt.spark4j.model.response.SparkResponse;
 import io.github.briqt.spark4j.model.response.SparkResponseFunctionCall;
 import io.github.briqt.spark4j.model.response.SparkResponseUsage;
+import okhttp3.Response;
 import okhttp3.WebSocket;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SparkSyncChatListener
@@ -13,6 +17,7 @@ import okhttp3.WebSocket;
  * @author briqt
  */
 public class SparkSyncChatListener extends SparkBaseListener {
+    private static final Logger logger = LoggerFactory.getLogger(SparkSyncChatListener.class);
 
     private final StringBuilder stringBuilder = new StringBuilder();
 
@@ -30,6 +35,13 @@ public class SparkSyncChatListener extends SparkBaseListener {
             sparkSyncChatResponse.setTextUsage(usage.getText());
             sparkSyncChatResponse.setOk(true);
         }
+    }
+
+    @Override
+    public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response) {
+        logger.error("讯飞星火api发生异常", t);
+        sparkSyncChatResponse.setOk(true);
+        sparkSyncChatResponse.setException(t);
     }
 
     /**

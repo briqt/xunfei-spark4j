@@ -62,6 +62,13 @@ public class SparkClient {
             } catch (InterruptedException ignored) {
             }
         }
+        Throwable exception = chatResponse.getException();
+        if (exception != null) {
+            if (!(exception instanceof SparkException)) {
+                exception = new SparkException(500, exception.getMessage());
+            }
+            throw (SparkException) exception;
+        }
         return chatResponse;
     }
 

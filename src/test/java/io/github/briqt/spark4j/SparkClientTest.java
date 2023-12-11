@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.briqt.spark4j.constant.SparkApiVersion;
+import io.github.briqt.spark4j.exception.SparkException;
 import io.github.briqt.spark4j.listener.SparkConsoleListener;
 import io.github.briqt.spark4j.model.SparkMessage;
 import io.github.briqt.spark4j.model.SparkSyncChatResponse;
@@ -90,14 +91,18 @@ public class SparkClientTest {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         System.out.println("提问：" + objectMapper.writeValueAsString(messages));
 
-        // 同步调用
-        SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
-        SparkTextUsage textUsage = chatResponse.getTextUsage();
+        try {
+            // 同步调用
+            SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
+            SparkTextUsage textUsage = chatResponse.getTextUsage();
 
-        System.out.println("\n回答：" + chatResponse.getContent());
-        System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
-                + "，回答tokens：" + textUsage.getCompletionTokens()
-                + "，总消耗tokens：" + textUsage.getTotalTokens());
+            System.out.println("\n回答：" + chatResponse.getContent());
+            System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
+                    + "，回答tokens：" + textUsage.getCompletionTokens()
+                    + "，总消耗tokens：" + textUsage.getTotalTokens());
+        } catch (SparkException e) {
+            System.out.println("发生异常了：" + e.getMessage());
+        }
     }
 
     @Test

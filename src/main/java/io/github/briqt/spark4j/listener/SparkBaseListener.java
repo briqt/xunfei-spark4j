@@ -12,6 +12,8 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -21,6 +23,7 @@ import java.util.List;
  * @author briqt
  */
 public class SparkBaseListener extends WebSocketListener {
+    private static final Logger logger = LoggerFactory.getLogger(SparkBaseListener.class);
 
     private SparkRequest sparkRequest;
 
@@ -129,8 +132,7 @@ public class SparkBaseListener extends WebSocketListener {
 
     @Override
     public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response) {
-        super.onFailure(webSocket, t, response);
-        throw new SparkException(500, "讯飞星火api连接异常：" + t.getMessage(), t);
+        logger.error("讯飞星火api发生异常：", t);
     }
 
     public SparkRequest getSparkRequest() {

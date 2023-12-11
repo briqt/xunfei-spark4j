@@ -10,7 +10,11 @@ import io.github.briqt.spark4j.model.response.SparkResponse;
 import io.github.briqt.spark4j.model.response.SparkResponseFunctionCall;
 import io.github.briqt.spark4j.model.response.SparkResponseUsage;
 import io.github.briqt.spark4j.model.response.SparkTextUsage;
+import okhttp3.Response;
 import okhttp3.WebSocket;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,7 @@ import java.util.Map;
  * @author briqt
  */
 public class SparkConsoleListener extends SparkBaseListener {
+    private static final Logger logger = LoggerFactory.getLogger(SparkConsoleListener.class);
 
     private final StringBuilder stringBuilder = new StringBuilder();
 
@@ -59,6 +64,11 @@ public class SparkConsoleListener extends SparkBaseListener {
                     + "，回答tokens：" + textUsage.getCompletionTokens()
                     + "，总消耗tokens：" + textUsage.getTotalTokens());
         }
+    }
+
+    @Override
+    public void onFailure(@NotNull WebSocket webSocket, @NotNull Throwable t, Response response) {
+        logger.error("讯飞星火api发生异常：", t);
     }
 
     /**

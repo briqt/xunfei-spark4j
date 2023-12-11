@@ -28,7 +28,7 @@ JDK：1.8
 <dependency>
     <groupId>io.github.briqt</groupId>
     <artifactId>xunfei-spark4j</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 
@@ -38,9 +38,9 @@ JDK：1.8
 SparkClient sparkClient=new SparkClient();
 
 // 设置认证信息
-        sparkClient.appid="";
-        sparkClient.apiKey="";
-        sparkClient.apiSecret="";
+sparkClient.appid="";
+sparkClient.apiKey="";
+sparkClient.apiSecret="";
 ```
 
 ### 同步调用
@@ -65,14 +65,18 @@ SparkRequest sparkRequest=SparkRequest.builder()
 .apiVersion(SparkApiVersion.V2_0)
 .build();
 
-// 同步调用
-SparkSyncChatResponse chatResponse=sparkClient.chatSync(sparkRequest);
-SparkTextUsage textUsage=chatResponse.getTextUsage();
-
-System.out.println("\n回答："+chatResponse.getContent());
-System.out.println("\n提问tokens："+textUsage.getPromptTokens()
-+"，回答tokens："+textUsage.getCompletionTokens()
-+"，总消耗tokens："+textUsage.getTotalTokens());
+try {
+    // 同步调用
+    SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
+    SparkTextUsage textUsage = chatResponse.getTextUsage();
+    
+    System.out.println("\n回答：" + chatResponse.getContent());
+    System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
+            + "，回答tokens：" + textUsage.getCompletionTokens()
+            + "，总消耗tokens：" + textUsage.getTotalTokens());
+} catch (SparkException e) {
+    System.out.println("发生异常了：" + e.getMessage());
+}
 ```
 
 控制台输出：
