@@ -55,8 +55,8 @@ public class SparkClientTest {
                 .maxTokens(2048)
                 // 核采样阈值。用于决定结果随机性,取值越高随机性越强即相同的问题得到的不同答案的可能性越高 非必传,取值为[0,1],默认为0.5
                 .temperature(0.2)
-                // 指定请求版本，默认使用2.0版本
-                .apiVersion(SparkApiVersion.V3_0)
+                // 指定请求版本，默认使用3.0版本
+                .apiVersion(SparkApiVersion.V3_5)
                 .build();
 
         // 使用默认的控制台监听器，流式调用；

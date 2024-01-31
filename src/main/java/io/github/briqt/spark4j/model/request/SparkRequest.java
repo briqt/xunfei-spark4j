@@ -20,7 +20,7 @@ public class SparkRequest implements Serializable {
 
     private SparkRequestPayload payload;
 
-    private transient SparkApiVersion apiVersion = SparkApiVersion.V2_0;
+    private transient SparkApiVersion apiVersion = SparkApiVersion.V3_0;
 
     public static SparkRequestBuilder builder() {
         return new SparkRequestBuilder();

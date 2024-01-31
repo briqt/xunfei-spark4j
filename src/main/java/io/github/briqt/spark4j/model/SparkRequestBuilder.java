@@ -106,7 +106,7 @@ public class SparkRequestBuilder {
 
     /**
      * 指定apiVersion<br/>
-     * 非必传，默认使用2.0版本
+     * 非必传，默认使用3.0版本
      */
     public SparkRequestBuilder apiVersion(SparkApiVersion apiVersion) {
         sparkRequest.setApiVersion(apiVersion);

@@ -22,6 +22,11 @@ public enum SparkApiVersion {
      * 3.0版本
      */
     V3_0("v3.1", "https://spark-api.xf-yun.com/v3.1/chat", "generalv3"),
+
+    /**
+     * 3.5版本
+     */
+    V3_5("v3.5", "https://spark-api.xf-yun.com/v3.5/chat", "generalv3.5"),
     ;
 
     SparkApiVersion(String version, String url, String domain) {
