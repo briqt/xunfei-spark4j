@@ -58,7 +58,7 @@ public class SparkConsoleListener extends SparkBaseListener {
         }
 
         if (2 == status) {
-            System.out.println("\n完整回答：" + stringBuilder);
+            System.out.println("\n完整回答：\n" + stringBuilder);
             SparkTextUsage textUsage = usage.getText();
             System.out.println("\n回答结束；提问tokens：" + textUsage.getPromptTokens()
                     + "，回答tokens：" + textUsage.getCompletionTokens()

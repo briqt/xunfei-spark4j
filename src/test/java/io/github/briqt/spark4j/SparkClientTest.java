@@ -41,8 +41,7 @@ public class SparkClientTest {
     void chatStreamTest() throws InterruptedException {
         // 消息列表，可以在此列表添加历史对话记录
         List<SparkMessage> messages = new ArrayList<>();
-        messages.add(SparkMessage.systemContent("请你扮演我的语文老师李老师，问我讲解问题问题，希望你可以保证知识准确，逻辑严谨。"));
-        messages.add(SparkMessage.userContent("鲁迅和周树人小时候打过架吗？"));
+        messages.add(SparkMessage.userContent("我今天买了三个苹果，昨天吃了一个，现在我还剩几个呢？"));
 
         // 构造请求
         SparkRequest sparkRequest = SparkRequest.builder()
@@ -56,7 +55,7 @@ public class SparkClientTest {
                 // 核采样阈值。用于决定结果随机性,取值越高随机性越强即相同的问题得到的不同答案的可能性越高 非必传,取值为[0,1],默认为0.5
                 .temperature(0.2)
                 // 指定请求版本，默认使用3.0版本
-                .apiVersion(SparkApiVersion.V3_5)
+                .apiVersion(SparkApiVersion.V4_0)
                 .build();
 
         // 使用默认的控制台监听器，流式调用；
@@ -70,9 +69,7 @@ public class SparkClientTest {
     void chatSyncTest() throws JsonProcessingException {
         // 消息列表，可以在此列表添加历史对话记录
         List<SparkMessage> messages = new ArrayList<>();
-        messages.add(SparkMessage.userContent("请你扮演我的语文老师李老师，问我讲解问题问题，希望你可以保证知识准确，逻辑严谨。"));
-        messages.add(SparkMessage.assistantContent("好的，这位同学，有什么问题需要李老师为你解答吗？"));
-        messages.add(SparkMessage.userContent("鲁迅和周树人小时候打过架吗？"));
+        messages.add(SparkMessage.userContent("我今天买了三个苹果，昨天吃了一个，现在我还剩几个呢？"));
 
         // 构造请求
         SparkRequest sparkRequest = SparkRequest.builder()
@@ -85,6 +82,7 @@ public class SparkClientTest {
                 .maxTokens(2048)
                 // 核采样阈值。用于决定结果随机性,取值越高随机性越强即相同的问题得到的不同答案的可能性越高 非必传,取值为[0,1],默认为0.5
                 .temperature(0.2)
+                .apiVersion(SparkApiVersion.V4_0)
                 .build();
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -96,7 +94,7 @@ public class SparkClientTest {
             SparkSyncChatResponse chatResponse = sparkClient.chatSync(sparkRequest);
             SparkTextUsage textUsage = chatResponse.getTextUsage();
 
-            System.out.println("\n回答：" + chatResponse.getContent());
+            System.out.println("\n回答：\n" + chatResponse.getContent());
             System.out.println("\n提问tokens：" + textUsage.getPromptTokens()
                     + "，回答tokens：" + textUsage.getCompletionTokens()
                     + "，总消耗tokens：" + textUsage.getTotalTokens());
@@ -116,7 +114,7 @@ public class SparkClientTest {
                 // 消息列表
                 .messages(messages)
                 // 使用functionCall功能版本需要大于等于3.0
-                .apiVersion(SparkApiVersion.V3_0)
+                .apiVersion(SparkApiVersion.V4_0)
                 // 添加方法，可多次调用添加多个方法
                 .addFunction(
                         // 回调时回传的方法名
