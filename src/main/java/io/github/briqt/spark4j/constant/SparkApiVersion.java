@@ -11,7 +11,7 @@ public enum SparkApiVersion {
     /**
      * 1.5版本
      */
-    V1_5("v1.1", "https://spark-api.xf-yun.com/v1.1/chat", "general"),
+    V1_5("v1.1", "https://spark-api.xf-yun.com/v1.1/chat", "lite"),
 
     /**
      * 2.0版本
